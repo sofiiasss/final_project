@@ -1,4 +1,4 @@
-<h1> Welcome to Valaxy Technologies </h1>
-<h2> Steup and deploy using jenkins </h2>
+<h1> Welcome to DevOps! </h1>
+<h2> Smile! You are awesome! </h2>
 
 
