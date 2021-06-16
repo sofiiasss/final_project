@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+    environment {
+        PATH = "/opt/maven/bin:$PATH"
+    }
+    stages {
+        stage("clone code"){
+            steps{
+               git url: 'https://github.com/sofiiasss/final_project.git'
+            }
+        }
+        stage("build code"){
+            steps{
+              sh "mvn clean install"
+            }
+        }
+        stage("deploy"){
+            steps{
+              sshagent(['deploy1']) {
+                 sh "scp -o StrictHostKeyChecking=no webapp/target/webapp.war ec2-user@54.172.88.102:/opt/apache-tomcat-8.5.66/webapps"
+                 
+                }
+            }
+        }
+    }
+}

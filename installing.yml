@@ -1,0 +1,30 @@
+---
+- name: Install Jenkins
+  hosts: deploy
+  become: yes
+
+  tasks:
+  - name: jenkins key
+    apt_key: url=https://pkg.jenkins.io/debian-stable/jenkins.io.key state=present
+    become: yes
+
+  - name: jenkins repo
+    apt_repository: repo='deb https://pkg.jenkins.io/debian-stable binary/' state=present
+    become: yes
+
+  - name: install jenkins
+    yum: name=jenkins state=latest
+
+  - name: sleep
+    wait_for: timeout=30
+
+  - name: init password
+    shell: cat /var/lib/jenkins/secrets/initialAdminPassword
+    changed_when: false
+    register: result
+  - set_fact:
+      password: "{{ result.stdout }}"
+
+  - name: print init password
+    debug:
+      var: password
